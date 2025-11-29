@@ -17,7 +17,7 @@ export default function Home() {
             and improve your engagement with data-driven insights.
           </p>
 
-          <Link href="/api/auth/login">
+          <Link href="/api/auth/manual-login">
             <Button size="lg" className="bg-white text-purple-600 hover:bg-gray-100">
               Connect Instagram
             </Button>

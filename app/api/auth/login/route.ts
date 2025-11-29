@@ -6,7 +6,8 @@ export async function GET(request: NextRequest) {
     const appId = process.env.INSTAGRAM_APP_ID!;
     const redirectUri = process.env.INSTAGRAM_REDIRECT_URI!;
     // For Instagram Graph API via Facebook Login, use these scopes
-    const scope = 'instagram_basic,instagram_content_publish,pages_show_list,pages_read_engagement';
+    // Removed instagram_content_publish as it requires app review
+    const scope = 'instagram_basic,pages_show_list,pages_read_engagement,instagram_manage_insights';
 
     const authUrl = InstagramClient.getAuthUrl(appId, redirectUri, scope);
 

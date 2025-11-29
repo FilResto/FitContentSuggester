@@ -31,14 +31,18 @@ export async function GET(request: NextRequest) {
       redirectUri
     );
 
-    console.log('Token exchange successful, user_id:', tokenData.user_id);
+    console.log('Token exchange successful');
+
+    // Get Instagram Business Account ID from Facebook Pages
+    const instagramUserId = await InstagramClient.getUserId(tokenData.access_token);
+    console.log('Instagram Business Account ID:', instagramUserId);
 
     // Get the session
     const session = await getIronSession(await cookies(), sessionOptions);
 
-    // Store access token and user ID in session
+    // Store access token and Instagram user ID in session
     session.accessToken = tokenData.access_token;
-    session.userId = tokenData.user_id.toString();
+    session.userId = instagramUserId;
     session.isLoggedIn = true;
 
     // Save the session
@@ -46,10 +50,10 @@ export async function GET(request: NextRequest) {
 
     console.log('Session saved successfully');
 
-    // Redirect to dashboard
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    // Return success JSON for client-side redirect
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Error in callback route:', error.message);
-    return NextResponse.redirect(new URL('/error', request.url));
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
